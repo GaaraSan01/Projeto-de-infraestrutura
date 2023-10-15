@@ -1,0 +1,27 @@
+- hosts: vnici-ansible
+  become: yes
+  tasks:
+    # Instala o pip (Python package installer)
+    - name: Instalando pip
+      apt:
+        pkg: python3-pip
+        update_cache: yes
+
+    # Instala o módulo Docker para Python
+    - name: Instalando módulo Docker para Python
+      pip:
+        name: docker
+
+    # Baixa a imagem do Docker do repositório público do Docker Hub
+    - name: Baixando imagem docker
+      docker_image:
+        name: gaarasan01/vnicidigital:1.1
+        source: pull
+
+    # Inicia um container Docker usando a imagem
+    - name: Iniciando container docker
+      docker_container:
+        name: vnicigital
+        image: gaarasan01/vnicidigital:1.1
+        published_ports:
+          - "3000:3000"
